@@ -15,6 +15,12 @@ func helloHandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello, World!")
 }
 
+type Todo struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+	Done  bool   `json:"done"`
+}
+
 func main() {
 	// Register the handler function for the "/hello" path
 	http.HandleFunc("/", helloHandler)
