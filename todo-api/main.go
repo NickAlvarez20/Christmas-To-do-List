@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"sync"
 )
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
@@ -20,6 +21,12 @@ type Todo struct {
 	Title string `json:"title"`
 	Done  bool   `json:"done"`
 }
+
+var todos []Todo // Slice to hold all todos
+
+var nextID int = 1 // A counter for the next available ID (start at 1)
+
+var mu sync.Mutex // A mutex to make it safe when multiple requests try to read/write the todos at the same time (Add sync to import)
 
 func main() {
 	// Register the handler function for the "/hello" path
