@@ -110,7 +110,35 @@ func todosHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(newTodo)
 
 	case http.MethodDelete:
-		// handle DELETE here
+		// Extract the id from the path like /todos/123 like previously
+		idStr := strings.TrimPrefix(r.URL.Path, "/todos/")
+		idStr = strings.TrimSuffix(idStr, "/")
+
+		id, err := strconv.Atoi(idStr)
+		if err != nil || id < 1 {
+			http.Error(w, "Invalid todo ID", http.StatusBadRequest)
+			return
+		}
+
+		// Delete the todo (thread-safe)
+		mu.Lock()
+		var deleted bool
+		for i, t := range todos {
+			if t.ID == id {
+				// Remove the element by appending slices
+				todos = append(todos[:i], todos[i+1:]...)
+				deleted = true
+				break
+			}
+		}
+		mu.Unlock()
+
+		if !deleted {
+			http.Error(w, "Todo not found", http.StatusNotFound)
+			return
+		}
+
+		w.WriteHeader(http.StatusNoContent)
 	default:
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
