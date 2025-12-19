@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 	"sync"
 )
 
@@ -37,7 +39,35 @@ func todosHandler(w http.ResponseWriter, r *http.Request) {
 			defer mu.Unlock()
 			json.NewEncoder(w).Encode(todos)
 		} else {
-			fmt.Fprintf(w, "Get single todo - path: %s", r.URL.Path)
+			// Extract the id from the path like /todos/123
+			idStr := strings.TrimPrefix(r.URL.Path, "/todos/")
+			// if trailing slash remove it too
+			idStr = strings.TrimSuffix(idStr, "/")
+
+			// Convert string to int
+			id, err := strconv.Atoi(idStr)
+			if err != nil || id < 1 {
+				http.Error(w, "Invalid todo ID", http.StatusBadRequest)
+				return
+			}
+			// Search for the todo
+			mu.Lock()
+			var found *Todo
+			for _, t := range todos {
+				if t.ID == id {
+					found = &t
+					break
+				}
+			}
+			mu.Unlock()
+
+			if found == nil {
+				http.Error(w, "Todo not found", http.StatusNotFound)
+				return
+			}
+
+			// Return the found todo as JSOn
+			json.NewEncoder(w).Encode(found)
 		}
 	case http.MethodPost:
 		// Only allow POST on the collection endpoint (/todos or /todos/)
