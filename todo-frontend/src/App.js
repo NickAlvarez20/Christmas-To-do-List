@@ -217,7 +217,7 @@ function App() {
               textAlign: "center",
               fontSize: "1.4rem",
               marginBottom: "30px",
-              color: "#ffd700",
+              color: "#ffffffff",
             }}
           >
             {todos.length === 0
@@ -276,7 +276,7 @@ function App() {
             <p
               style={{
                 textAlign: "center",
-                color: "#ffd700",
+                color: "#ffffffff",
                 fontStyle: "italic",
                 fontSize: "1.3rem",
                 marginTop: "60px",
