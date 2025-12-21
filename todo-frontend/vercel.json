@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/todos/(.*)", "destination": "/api/index.go" },
+    { "source": "/todos", "destination": "/api/index.go" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
