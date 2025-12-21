@@ -44,6 +44,19 @@ function App() {
     }
   };
 
+  // handleDelete function
+  const handleDelete = async (id) => {
+    const response = await fetch(`http://localhost:8080/todos/${id}`, {
+      method: "DELETE",
+    });
+
+    if (response.ok) {
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+    } else {
+      console.error("Failed to delete todo:", id);
+    }
+  };
+
   return (
     <div>
       <h1>My Todo App</h1>
@@ -65,7 +78,33 @@ function App() {
       </form>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>{todo.title}</li>
+          <li
+            key={todo.id}
+            style={{
+              margin: "15px 0",
+              padding: "10px",
+              background: "#f9f9f9",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span>{todo.title}</span>
+            <button
+              onClick={() => handleDelete(todo.id)}
+              style={{
+                padding: "8px 16px",
+                background: "#ff4444",
+                color: "white",
+                border: "none",
+                borderRadius: "6px",
+                cursor: "pointer",
+              }}
+            >
+              Delete
+            </button>
+          </li>
         ))}
       </ul>
     </div>
