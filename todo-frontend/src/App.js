@@ -74,7 +74,7 @@ function App() {
     <div
       style={{
         width: "100vw",
-        minHeight: "100vh", // Use minHeight instead of fixed height
+        minHeight: "100vh",
         margin: 0,
         padding: 0,
         boxSizing: "border-box",
@@ -82,10 +82,10 @@ function App() {
         position: "fixed",
         top: 0,
         left: 0,
-        overflowY: "auto", // Allow vertical scroll
+        overflowY: "auto",
         overflowX: "hidden",
         color: "#f0f0f0",
-        paddingBottom: "env(safe-area-inset-bottom, 40px)", // Extra space for mobile keyboard/notch
+        paddingBottom: "env(safe-area-inset-bottom, 60px)", // Extra safe area for notch/keyboards
       }}
     >
       {/* Main Christmas scene background */}
@@ -102,24 +102,25 @@ function App() {
           pointerEvents: "none",
           zIndex: 1,
           overflow: "hidden",
-          backgroundColor: "#000", // dark fallback behind image
+          backgroundColor: "#000",
         }}
       >
         <div
           style={{
-            width: "100vw", // Stretch to full viewport width
+            width: "100vw",
+            height: "1168px",
             maxWidth: "100vw",
-            height: "1168px", // Fixed original height (no vertical stretch)
+            maxHeight: "100vh",
             backgroundImage:
               "url('/ChristmasBackgroundTheme-GrandHolyPalace.jpg')",
-            backgroundSize: "100% 1168px", // 100% width, exact 1168px height
-            backgroundPosition: "center top", // Keep top aligned (change to "center center" if you prefer)
+            backgroundSize: "100% 1168px",
+            backgroundPosition: "center top",
             backgroundRepeat: "no-repeat",
           }}
         />
       </div>
 
-      {/* Medium-intensity snowstorm overlay */}
+      {/* Snowstorm */}
       <div
         style={{
           position: "fixed",
@@ -136,15 +137,13 @@ function App() {
         }}
       />
 
-      {/* Scrollable content container */}
+      {/* Content */}
       <div
         style={{
           position: "relative",
           zIndex: 3,
-          width: "100%",
           minHeight: "100vh",
-          overflowY: "auto",
-          padding: "20px 20px 80px 20px", // Reduced top padding, more bottom for keyboard
+          padding: "20px 20px 140px 20px", // Extra bottom padding for mobile safety
           boxSizing: "border-box",
         }}
       >
@@ -162,7 +161,7 @@ function App() {
             🎄 My Christmas Todo List 🎄
           </h1>
 
-          {/* Input form card */}
+          {/* Form card */}
           <div
             style={{
               background: "rgba(255, 255, 255, 0.15)",
@@ -176,11 +175,7 @@ function App() {
           >
             <form
               onSubmit={handleSubmit}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "15px",
-              }}
+              style={{ display: "flex", flexDirection: "column", gap: "15px" }}
               className="add-form"
             >
               <input
@@ -366,9 +361,17 @@ function App() {
             </div>
           )}
         </div>
+
+        {/* Footer spacer — ensures last todo has breathing room */}
+        <footer
+          style={{
+            height: "100px",
+            width: "100%",
+          }}
+        />
       </div>
 
-      {/* Animations */}
+      {/* Animations & Responsive */}
       <style jsx>{`
         @keyframes snowFall {
           0% {
@@ -407,7 +410,6 @@ function App() {
             transform: translateY(100vh) rotate(720deg);
           }
         }
-        /* Responsive */
         .add-form {
           flex-direction: column;
         }
@@ -415,34 +417,28 @@ function App() {
           flex-direction: column;
           align-items: flex-start;
         }
-        @media (max-width: 768px) {
-          [style*="padding: 20px 20px 80px 20px"] {
-            padding-bottom: 120px !important;
+        @media (min-width: 768px) {
+          .add-form {
+            flex-direction: row;
           }
-          h2[style*='fontSize: "4rem"'] {
-            font-size: 3rem !important;
-          }
-          p[style*='fontSize: "2rem"'] {
-            font-size: 1.6rem !important;
-          }
-          h1 {
-            font-size: 2.2rem !important;
-            margin-bottom: 30px;
-          }
-
-          .add-form > input,
-          .add-form > button {
-            font-size: 1.1rem;
-            padding: 14px 18px;
-          }
-
-          .todo-item > span {
-            font-size: 1.2rem;
+          .todo-item {
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
           }
         }
         @media (min-width: 1024px) {
           h1 {
             font-size: 3.5rem;
+          }
+        }
+        /* Mobile celebration text scaling */
+        @media (max-width: 768px) {
+          h2[style*='fontSize: "4rem"'] {
+            font-size: 3rem !important;
+          }
+          p[style*='fontSize: "2rem"'] {
+            font-size: 1.6rem !important;
           }
         }
       `}</style>
