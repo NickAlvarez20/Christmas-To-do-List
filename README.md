@@ -16,11 +16,11 @@ Todo-API
 
 
 ## About
-A simple Todo API built in Go, with a frontend component. This project implements a backend API for managing todo items and includes a basic frontend interface.
+A simple Todo API built in Go, with a React frontend component. This project implements a backend API for managing todo items and includes a React frontend interface.
 
 
 ## Prerequisites
-To run this project you need Go and Node.js installed on your system.
+To run this project you need Go, React-Vite, JavaScript, and Node.js  installed on your system.
 Additional libraries are required: Go modules (via go.mod in todo-api) and Node.js dependencies including Vite (via package.json in todo-frontend).
 
 
